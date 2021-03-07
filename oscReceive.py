@@ -10,7 +10,7 @@ import os
 
 fescala = 8 # fundo de escala do acelerometro
 fgiro = 2000 # fundo de escala do giroscopio
-filename = 'data/test'
+filename = 'data/strokes_picked'
 
 def handlerfunction(address, data):
     j = {'address' : address, 'data': data}

@@ -22,7 +22,7 @@ timestamp = 5
 # gyy = 9
 # gyz = 10
 
-filename = 'data/test_e7e86c73f2f94376be79966d393f49cb.csv'
+filename = 'data/strokes_picked_cecfa407e8314136b7b5afedb5cdd4f7.csv'
 
 
 # Listas para os dados de todos os sensores
@@ -91,8 +91,10 @@ plt.figure()
 plt.plot(time, acel)
 plt.plot(time, acelFiltered, linewidth=2)
 plt.legend(('Dado bruto', 'Dado filtrado com Butterworth'))
-plt.ylabel('Aceleração (g)')
-plt.title('Aceleração e Ângulo x Amostra - ' + (((filename).split('/')[1]).split('_')[0]).split('.')[0])
+plt.ylabel('Aceleração (m/s2)')
+plt.xlabel('Tempo (s)')
+plt.title('Aceleração x Tempo - ' + (((filename).split('/')[1]).split('_')[0]).split('.')[0])
+plt.savefig((filename).split('.csv')[0] + '_filtered.png')
 
 # Grafico da aceleracao nos tres eixos
 plt.figure()
@@ -100,7 +102,10 @@ plt.plot(time, acelX)
 plt.plot(time, acelY)
 plt.plot(time, acelZ)
 plt.legend(('Aceleração em X', 'Aceleração em Y', 'Aceleração em Z'))
-plt.ylabel('Aceleração (g)')
+plt.ylabel('Aceleração (m/s2)')
+plt.xlabel('Tempo (s)')
+plt.title('Aceleração x Tempo - ' + (((filename).split('/')[1]).split('_')[0]).split('.')[0])
+
 
 # # Grafico da velocidade angular nos tres eixos
 # plt.subplot(4,1,3)
@@ -119,7 +124,7 @@ plt.ylabel('Aceleração (g)')
 # plt.ylabel('Ãngulo (graus)')
 
 # Salvando a figura com os graficos
-plt.savefig((filename).split('.csv')[0] + '.png')
+plt.savefig((filename).split('.csv')[0] + '_xyz.png')
 
 # # Comparando o dado de dois sensores
 # i = 0
