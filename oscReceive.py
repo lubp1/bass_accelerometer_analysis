@@ -9,9 +9,9 @@ import math
 import os
 import pickle
 
-music = 'Someday - The Strokes'
+music = 'NIB - Black Sabbath'
 technique = 'picked'
-filename = 'someday'
+filename = 'nib'
 
 def handlerfunction(address, data):
     j = {'address' : address, 'data': data}

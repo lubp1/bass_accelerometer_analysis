@@ -23,7 +23,7 @@ timestamp = 5
 # gyy = 9
 # gyz = 10
 
-filename = 'data/someday_93b7ee6d65d34a2a85584949f1b508b6.pkl'
+filename = 'data/nib_f529a60cbd8540978e9b022d1c64734f.pkl'
 
 
 # Listas para os dados de todos os sensores
