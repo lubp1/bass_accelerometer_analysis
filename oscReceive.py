@@ -7,10 +7,11 @@ import sys
 import csv
 import math
 import os
+import pickle
 
-fescala = 8 # fundo de escala do acelerometro
-fgiro = 2000 # fundo de escala do giroscopio
-filename = 'data/strokes_picked'
+music = 'Someday - The Strokes'
+technique = 'picked'
+filename = 'someday'
 
 def handlerfunction(address, data):
     j = {'address' : address, 'data': data}
@@ -22,7 +23,7 @@ def handlerfunction(address, data):
 print('iniciano o sistema\n')
 
 unique_filename = str(uuid.uuid4().hex)
-fname =  filename + "_" + unique_filename + ".csv"
+fname =  "data/" + filename + "_" + unique_filename + ".pkl"
 # Start the system.
 osc_startup()
 
@@ -45,18 +46,39 @@ try:
         osc_process()
     # …
 except KeyboardInterrupt:
-    with open(fname, 'w', newline='') as csvfile:
-        file = open(filename + '.dat', 'r')
-        data = file.read()
-        file.close()
-        jsons = data.split('\n')
-        jsons.pop()
-        spamwriter = csv.writer(csvfile, delimiter=',',
-                                quotechar='|', quoting=csv.QUOTE_MINIMAL)              
-        for i in jsons:
-            linha = json.loads(i)
-            res = math.sqrt((linha["data"][0])**2 + (linha["data"][1])**2 + (linha["data"][2])**2)
-            spamwriter.writerow([linha["address"], res, linha["data"][0], linha["data"][1], linha["data"][2], linha["data"][3]])
+    data_dict = dict()
+    data_dict['technique'] = technique
+    data_dict['music'] = music
+    data_dict['resulting acceleration'] = list()
+    data_dict['X axis acceleration'] = list()
+    data_dict['Y axis acceleration'] = list()
+    data_dict['Z axis acceleration'] = list()
+    data_dict['timestamp'] = list()
+
+    # load data from .dat file
+    file = open(filename + '.dat', 'r')
+    data = file.read()
+    file.close()
+    jsons = data.split('\n')
+    jsons.pop()
+
+    for i in jsons:
+        json_data = json.loads(i)['data']
+
+        if jsons.index(i) == 0:
+            t0 = json_data[3]
+
+        res = math.sqrt((json_data[0])**2 + (json_data[1])**2 + (json_data[2])**2)
+        data_dict['resulting acceleration'].append(res)
+        data_dict['X axis acceleration'].append(json_data[0])
+        data_dict['Y axis acceleration'].append(json_data[1])
+        data_dict['Z axis acceleration'].append(json_data[2])
+        data_dict['timestamp'].append(json_data[3] - t0)
+
+    file = open(fname, 'wb')
+    pickle.dump(data_dict, file)
+    file.close()
+
     os.remove(filename + '.dat')
     print('\nArquivo gerado com sucesso: ' + fname)
 # Properly close the system.

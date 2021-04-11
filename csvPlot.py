@@ -6,6 +6,7 @@ import operator
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import signal
+import pickle
 
 
 
@@ -22,7 +23,7 @@ timestamp = 5
 # gyy = 9
 # gyz = 10
 
-filename = 'data/strokes_picked_cecfa407e8314136b7b5afedb5cdd4f7.csv'
+filename = 'data/someday_93b7ee6d65d34a2a85584949f1b508b6.pkl'
 
 
 # Listas para os dados de todos os sensores
@@ -40,22 +41,15 @@ acelZ = list()
 maxsensor = 0 # numero do maior id de sensor
 plots = None
 
-# Lendo o CSV e criando as listas para cada sensor
-with open(filename,'r') as csvfile:
-    plots = csv.reader(csvfile, delimiter=',')
-    sortedlist = sorted(plots, key=operator.itemgetter(sensorAddress)) 
-    for row in sortedlist:
-        if row[acres] != 'nan':
-            time.append(float(row[timestamp]))
-            acel.append(float(row[acres]))
-            acelX.append(float(row[acx]))
-            acelY.append(float(row[acy]))
-            acelZ.append(float(row[acz]))
-        # rollAngle[int(row[0][1])].append(float(row[roll]))
-        # pitchAngle[int(row[0][1])].append(float(row[pitch]))
-        # gyroX[int(row[0][1])].append(float(row[gyx]))
-        # gyroY[int(row[0][1])].append(float(row[gyy]))
-        # gyroZ[int(row[0][1])].append(float(row[gyz]))
+file = open(filename, 'rb')
+data_dict = pickle.load(file)
+file.close()
+
+time = data_dict['timestamp']
+acel = data_dict['resulting acceleration']
+acelX = data_dict['X axis acceleration']
+acelY = data_dict['Y axis acceleration']
+acelZ = data_dict['Z axis acceleration']
 
 
 # Calculando o sinal da aceleracao resultante filtrado por um filtro Butterworth de ordem 6
